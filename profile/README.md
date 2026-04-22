@@ -1,25 +1,35 @@
 # Nexus-Fly Organization
 
-Nexus-Fly is a decentralized coordination platform for autonomous logistics fleets. This organization contains the core Rust implementation, simulation demos, and a minimal front-end used for demonstration and documentation.
+Nexus-Fly is a decentralized coordination platform for autonomous logistics fleets. This organization hosts the core Rust implementation, simulation demos, and a front-end landing experience.
 
-Key locations:
+## For Judges
 
-- Repository root: `README.md` — high-level overview and quick start.
-- Rust core and demos: `Codigo-Rust/README.md` — developer docs, build, and runtime instructions.
-- Front-end demo: `front-end/README.md` — React + Vite front-end notes.
+If you are evaluating the project, these are the fastest entry points:
 
-Getting started:
+1. High-level overview, architecture, and roadmap:
+	- Repository root README
+2. Rust core, simulations, and how to run the MVP:
+	- Codigo-Rust README
+3. Front-end landing experience:
+	- front-end README
 
-1. Read the top-level `README.md` for a quick start and architecture summary.
-2. For development, start the Docker dev container and run the local MVP demo as described in `Codigo-Rust/README.md`.
+## What to Look For
 
-Reporting issues & contributing:
+- Consensus-driven event ordering for coordination without a central server.
+- Deterministic auction, handoff, and recovery logic in the Rust domain layer.
+- Local simulation that exercises the full delivery lifecycle.
+- Clear separation between consensus, domain logic, and UI.
 
-- Open issues and pull requests in this repository.
-- For design discussions or major changes, open an issue first to get feedback.
+## Quick Start (MVP)
 
-Contact:
+On Windows, run the Rust demo from the Docker dev container:
 
-- Use the repository Issues for questions and coordination.
+1. Build and start the container.
+2. Enter the container shell.
+3. Run the MVP demo binary.
 
-Thanks for contributing — together we can make resilient, serverless coordination for autonomous fleets.
+Detailed steps are in the Rust README.
+
+## Support
+
+Please use repository Issues for questions, feedback, or evaluation notes.
