@@ -11,98 +11,203 @@
 
 ### The benchmark for autonomous swarm coordination.
 
+---
+
+![Built with Rust](https://img.shields.io/badge/Built%20with-Rust-orange?style=for-the-badge&logo=rust)
+![Containerized](https://img.shields.io/badge/Docker-Ready-blue?style=for-the-badge&logo=docker)
+![Tests](https://img.shields.io/badge/Tests-61%20passing-brightgreen?style=for-the-badge&logo=github-actions)
+![License](https://img.shields.io/badge/License-MIT-lightgrey?style=for-the-badge)
+![Status](https://img.shields.io/badge/Status-Functional%20%26%20Running-success?style=for-the-badge)
+
+---
+
+### Pitch
+
+[![Watch the Nexus-Fly Pitch](https://img.youtube.com/vi/BnBTw9CslL0/maxresdefault.jpg)](https://youtu.be/BnBTw9CslL0)
+
+> *Click the image above to watch the pitch video.*
+
 </div>
 
 ---
 
-# Nexus-Fly Organization — Judge Guide
+# Evaluation Guide — Nexus-Fly
 
-Nexus-Fly is a decentralized coordination platform for autonomous logistics fleets, implicitly establishing the winning standard for The Vertex Swarm Challenge 2026. This organization contains:
+**Nexus-Fly** is a decentralized coordination platform for autonomous delivery fleets, designed to show how drones, ground robots, and e-bikes can operate as a single resilient network without relying on a central orchestrator. The project addresses one of the most important challenges in autonomous logistics: coordinating heterogeneous agents in real time in a way that is auditable, fault-tolerant, and reproducible.
 
-- Core implementation (Rust) and binaries for the MVP
-- Deterministic local simulation and demo scenarios
-- A small React front-end used for presentation and documentation
+This organization includes:
 
-This file is a concise guide for judges who need to evaluate the submission quickly and reproducibly.
+* The **core Rust implementation** and fully functional MVP binaries
+* A **deterministic local execution flow** and reproducible operational scenarios
+* A **live execution server** for observing the system running continuously
+* A **React front-end** for architecture presentation and system visualization
+* A **Docker-containerized environment**, ready for fast deployment and frictionless validation
 
-## Quick entry points
+This document is intended as a concise and practical guide for reviewing the project efficiently, technically, and reproducibly.
 
-- Overview & architecture: [README.md](README.md)
-- Rust core & MVP demo: [Codigo-Rust/README.md](Codigo-Rust/README.md)
-- Front-end demo: [front-end/README.md](front-end/README.md)
+---
 
-## Evaluation checklist (recommended)
+## Recommended Entry Points
 
-Use this checklist to verify features and claims in a short review session.
+* **Project overview and architecture:** `README.md`
+* **Rust core, MVP flow, and execution details:** `Codigo-Rust/README.md`
+* **Front-end presentation layer:** `front-end/README.md`
 
-1. Core correctness
-	- Consensus ordering: confirm ordered events are applied identically on multiple nodes or in simulated runs.
-	- Auction determinism: run the local auction simulation and check identical winner selection across nodes.
-2. Resilience & recovery
-	- Agent failure handling: trigger a silent agent in the sim and verify re-auction/recovery behaviour.
-	- Handoff flow: validate a handoff scenario and ledger transfers between agents.
-3. Observability & logs
-	- Review logs produced by the demo for the sequence: OrderCreated -> AuctionBid -> AuctionWinner -> PickedUp -> InTransit -> Delivered.
-4. Simulation & demo
-	- Run `mvp_demo` (config-driven or local) and verify the end-to-end flow completes without manual steps.
-5. Presentation
-	- Front-end loads and presents the architecture and simulation summaries.
+---
 
-## Quick Start (MVP) — minimal reproducible steps
+## Recommended Review Checklist
 
-On Windows (recommended): run the Rust demo inside the provided Docker dev container to avoid native build issues.
+Use this checklist to validate the project's main claims during a short review session.
 
-1. Build and start the dev container (from repository root):
+### 1. Distributed Core Correctness
+
+* **Consensus ordering:** confirm that critical events are applied consistently and identically across nodes or simulated executions.
+* **Auction determinism:** verify that the winner selection logic produces the exact same result across runs and nodes.
+
+### 2. Resilience and Recovery
+
+* **Agent failure handling:** trigger an inactive or silent agent and observe how the system detects the failure and re-routes the workflow through re-auction.
+* **Handoff flow:** validate that a delivery can be transferred between agents and that the ledger reflects the transition correctly.
+
+### 3. Observability and Traceability
+
+* Review the logs and confirm the expected operational sequence:
+  `OrderCreated -> AuctionBid -> AuctionWinner -> PickedUp -> InTransit -> Delivered`
+
+### 4. Functional Execution
+
+* Run `mvp_demo` and verify that a complete delivery lifecycle executes end-to-end without manual intervention.
+* Run `mvp_server` and confirm that the system stays active, continuously generating activity and real-time logs.
+
+### 5. Presentation Layer
+
+* Confirm that the front-end loads correctly and communicates the architecture, capabilities, and system scenarios clearly.
+
+---
+
+## Quick Start — Minimal Reproducible Execution
+
+### Recommended on Windows
+
+To avoid native build issues, the Rust execution flow should be run inside the provided Docker development container.
+
+### 1. Build and start the development container
+
+From the repository root:
 
 ```bash
 docker compose build
 docker compose up -d vertex-dev
 ```
 
-2. Enter the container shell:
+### 2. Enter the container
 
 ```bash
 docker compose exec vertex-dev bash
 ```
 
-3. Inside the container, run the local demo (no external network required):
+### 3. Run the local functional workflow
+
+Inside the container:
 
 ```bash
 cargo run --bin mvp_demo
 ```
 
-Notes:
-- The Rust test suite is expected to pass (61 tests in the current codebase). Running `cargo test` inside the container validates that.
-- The `tashi-vertex` native dependency is Linux-only; the container provides the needed environment.
+### 4. Run the live execution server
 
-## What to inspect in limited time (5–15 minutes)
+Inside the container:
 
-- Run `cargo run --bin mvp_demo` and observe logs for a complete delivery lifecycle.
-- Trigger a simulated agent failure and confirm re-auction via logs.
-- Open `front-end` dev server (`npm run dev`) and confirm landing content loads (optional — only for demonstration).
-
-## Where to record findings
-
-- Use this repository's Issues to report results, attach logs, or request clarifications.
-
-## Support and contact
-
-- For technical questions about running the demo, reference `Codigo-Rust/README.md` or open an Issue.
-
-Thank you for evaluating Nexus-Fly. If you want a short demo run or recorded logs prepared for judges, I can generate them on request.
+```bash
+cargo run --bin mvp_server
+```
 
 ---
 
-## Why this wins (short notes for judges)
+## Execution Notes
 
-These are quick, judge-focused reasons the project stands out — tested, demonstrable, and ready for evaluation.
+* The Rust test suite is expected to pass successfully (**61 tests in the current codebase**).
+  You can validate this by running:
 
-- Deterministic by design: the auction and state transitions are reproducible across nodes and runs — what you see in the logs is what every node sees.
-- Reproducible MVP: the local demo (`mvp_demo`) executes a full delivery lifecycle end-to-end with no external services required.
-- Tested quality: the Rust test-suite (61 tests) covers domain logic, auction, handoffs and recovery flows.
-- Resilience-first architecture: no single orchestration server; consensus-ordered events give safety and auditability.
-- Demo-ready in minutes: judges can run the containerized demo and observe a full scenario within ~5 minutes.
+```bash
+cargo test
+```
 
-_Short, honest, and practical — built to be judged and to win on technical merit._
+* The native **tashi-vertex** dependency requires a Linux environment; the Docker container already provides everything needed.
+* Because the project is already **containerized with Docker**, it is straightforward to deploy, reproduce, and inspect without dealing with local environment inconsistencies.
 
-_Pick us if you value reproducibility, resilience, and clear domain separation._
+---
+
+## What to Inspect in a Short Review (5-15 minutes)
+
+If review time is limited, this is the recommended flow:
+
+1. Run `cargo run --bin mvp_demo`
+2. Confirm the complete delivery lifecycle in the logs
+3. Run `cargo run --bin mvp_server`
+4. Observe continuous system activity, event generation, and live behavior
+5. Inspect auction logic, handoffs, and settlement behavior
+6. Trigger or review an agent failure and re-auction path
+7. Open the front-end (`npm run dev`) to inspect architecture and visual summaries
+   *(Optional, but useful for context and presentation)*
+
+---
+
+## Where to Record Findings
+
+Use this repository's **Issues** to report findings, attach logs, or request clarification.
+
+---
+
+## Support and Contact
+
+For technical questions about execution or architecture, refer to:
+
+* `Codigo-Rust/README.md`
+* or open an **Issue** in this repository.
+
+If a guided run-through or a packaged set of execution logs is needed, it can be prepared quickly.
+
+---
+
+# Why Nexus-Fly Stands Out
+
+These are some of the reasons Nexus-Fly represents a strong, technically mature, and highly inspectable submission:
+
+* **Deterministic by design**
+  Auction behavior, event ordering, and state transitions are reproducible across nodes and executions. What is observed is not dependent on arbitrary or manual conditions.
+
+* **Reproducible functional workflow**
+  The local execution path (`mvp_demo`) runs a full delivery lifecycle end-to-end without requiring external services, making validation fast and reliable.
+
+* **Live execution server for continuous observation**
+  `mvp_server` allows the system to be observed as an ongoing functional process, generating activity and logs in real time.
+
+* **Quality backed by tests**
+  The current Rust test suite (**61 tests**) covers domain logic, auctions, handoffs, recovery flows, and core system behavior.
+
+* **Resilience-first architecture**
+  Nexus-Fly removes the single point of failure by replacing centralized orchestration with a coordination layer based on consensus-ordered events.
+
+* **Direct, frictionless deployment**
+  The project is already prepared to run inside a **Dockerized environment**, which reduces setup overhead and makes review fast, clean, and consistent.
+
+* **Clear observability**
+  Logs and execution flow make it possible to verify exactly how an order is created, assigned, transferred, and completed.
+
+* **Ready to run in minutes**
+  The project can be built, launched, and inspected quickly, allowing attention to stay on system behavior rather than environment setup.
+
+* **Real technical substance**
+  The system combines distributed systems, robotics, BFT consensus, multi-agent coordination, and autonomous logistics in a modular and extensible architecture.
+
+---
+
+# Conclusion
+
+**Nexus-Fly represents a concrete and functional vision of how autonomous coordination should work in the future.**
+It combines reproducibility, resilience, traceability, and architectural clarity into a system that can already be deployed, executed, and inspected with minimal setup.
+
+Rather than presenting only a concept, Nexus-Fly provides a **running functional codebase** that shows how drones, ground robots, and e-bikes can operate as a distributed logistics network without relying on a central orchestrator. Its architecture demonstrates a credible path toward real-world autonomous fleet coordination: **distributed, fault-tolerant, auditable, and built for heterogeneous agents.**
+
+**Nexus-Fly is not just a proposal — it is functional code already running.**
